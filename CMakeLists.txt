@@ -14,15 +14,14 @@ set(source_files
    other.cpp
 )
 
-# If you need to use a library, this is a common way to do it
-# find_package(PkgConfig REQUIRED)
-# pkg_check_modules(SOME_PACKAGE REQUIRED libsomelibrary)
-# include_directories(${SOME_PACKAGE_INCLUDE_DIRS})
-# link_directories(${SOME_PACKAGE_LIBRARY_DIRS})
-# add_definitions(${SOME_PACKAGE_CFLAGS_OTHER})
-
 # Build a program called 'program' from the source files we specified above
-add_executable(program ${source_files})
+set(EXECUTABLE_NAME "program")
+add_executable(${EXECUTABLE_NAME} ${source_files})
 
-# Also needed to add a library
-# target_link_libraries(program ${SOME_PACKAGE_LIBRARIES})
+# Find pkg-config, which will help you use libraries
+find_package(PkgConfig REQUIRED)
+
+# Detect and add SFML
+pkg_check_modules(SFML REQUIRED sfml-all)
+include_directories(${SFML_INCLUDE_DIR})
+target_link_libraries(${EXECUTABLE_NAME} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES})
